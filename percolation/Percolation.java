@@ -4,7 +4,7 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 public class Percolation {
 
     private WeightedQuickUnionUF ufStruct; // weighted quick union data structure
-    private int gridRoot;
+    private int gridRoot; // square root of grid size
     private boolean[][] sites; // grid of nxn sites
     private int openCount; // total open sites
 
@@ -73,7 +73,7 @@ public class Percolation {
     // i.e. connected(0, row*col) == true
     public boolean isFull(int row, int col) {
         validateIndices(row, col);
-        return ufStruct.connected(0, grid2UF(row, col));
+        return isOpen(row, col) && ufStruct.connected(0, grid2UF(row, col));
     }
 
     // number of open sites
