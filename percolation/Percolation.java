@@ -4,6 +4,7 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 public class Percolation {
 
     private WeightedQuickUnionUF ufStruct; // weighted quick union data structure
+    private int gridRoot;
     private boolean[][] sites; // grid of nxn sites
     private int openCount; // total open sites
 
@@ -17,7 +18,8 @@ public class Percolation {
         }
         ufStruct = new WeightedQuickUnionUF((n*n)+2);
         initUFStruct(n);
-        sites = new boolean[n][n];
+        gridRoot = n;
+        sites = new boolean[n+1][n+1];
         openCount = 0;
     }
 
@@ -39,7 +41,7 @@ public class Percolation {
         validateIndices(row, col);
         if (!isOpen(row, col)) {
             openCount += 1;
-            sites[row-1][col-1] = true;
+            sites[row][col] = true;
             connectNeighbours(row, col);
         }
     }
@@ -51,20 +53,20 @@ public class Percolation {
         if (row-1 != 0 && isOpen(row-1, col))
             ufStruct.union(current, grid2UF(row-1, col));
         // right of site
-        if (row+1 != sites.length+1 && isOpen(row+1, col))
+        if (row+1 != gridRoot+1 && isOpen(row+1, col))
             ufStruct.union(current, grid2UF(row+1, col));
         // above site
         if (col-1 != 0 && isOpen(row, col-1))
             ufStruct.union(current, grid2UF(row, col-1));
         // below site
-        if (col+1 != sites.length+1 && isOpen(row, col+1))
+        if (col+1 != gridRoot+1 && isOpen(row, col+1))
             ufStruct.union(current, grid2UF(row, col+1));
     }
 
     // is site (row, col) open?
     public boolean isOpen(int row, int col) {
         validateIndices(row, col);
-        return sites[row-1][col-1];
+        return sites[row][col];
     }
 
     // is site (row, col) full?
@@ -82,21 +84,21 @@ public class Percolation {
     // does the system percolate?
     // is top virtual site connected to bottom virtual site? connected(0, N*N+1
     public boolean percolates() {
-        int bottom = (sites.length * sites.length) + 1;
+        int bottom = (gridRoot * gridRoot) + 1;
         return ufStruct.connected(0, bottom);
     }
 
     // validates row and col parameters
     private void validateIndices(int row, int col) {
-        if (row > sites.length || col > sites.length || row <= 0 || col <= 0) {
+        if (row > gridRoot || col > gridRoot || row <= 0 || col <= 0) {
             throw new IllegalArgumentException(
-                    "row and column indices must be between 1 and " + sites.length);
+                    "row and column indices must be between 1 and " + gridRoot);
         }
     }
 
     // converts row and col parameters to weighted union-find structure index
     private int grid2UF(int row, int col) {
-        return ((row-1) * sites.length) + col;
+        return ((row-1) * gridRoot) + col;
     }
 
     // Run a Monte Carlo simulation, args[0] is size of grid
