@@ -49,16 +49,16 @@ public class Percolation {
     // checks if neighbours are within boundaries and connects if they are open as well
     private void connectNeighbours(int row, int col) {
         int current = grid2UF(row, col);
-        // left of site
+        // above site
         if (row != 1 && isOpen(row-1, col))
             ufStruct.union(current, grid2UF(row-1, col));
-        // right of site
+        // below site
         if (row != gridRoot && isOpen(row+1, col))
             ufStruct.union(current, grid2UF(row+1, col));
-        // above site
+        // left of site
         if (col != 1 && isOpen(row, col-1))
             ufStruct.union(current, grid2UF(row, col-1));
-        // below site
+        // right of site
         if (col != gridRoot && isOpen(row, col+1))
             ufStruct.union(current, grid2UF(row, col+1));
     }
