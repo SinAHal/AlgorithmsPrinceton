@@ -50,16 +50,16 @@ public class Percolation {
     private void connectNeighbours(int row, int col) {
         int current = grid2UF(row, col);
         // left of site
-        if (row-1 != 0 && isOpen(row-1, col))
+        if (row != 1 && isOpen(row-1, col))
             ufStruct.union(current, grid2UF(row-1, col));
         // right of site
-        if (row+1 != gridRoot+1 && isOpen(row+1, col))
+        if (row != gridRoot && isOpen(row+1, col))
             ufStruct.union(current, grid2UF(row+1, col));
         // above site
-        if (col-1 != 0 && isOpen(row, col-1))
+        if (col != 1 && isOpen(row, col-1))
             ufStruct.union(current, grid2UF(row, col-1));
         // below site
-        if (col+1 != gridRoot+1 && isOpen(row, col+1))
+        if (col != gridRoot && isOpen(row, col+1))
             ufStruct.union(current, grid2UF(row, col+1));
     }
 
