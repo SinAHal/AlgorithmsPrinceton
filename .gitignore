@@ -3,5 +3,5 @@
 *.jpg
 *.iml
 *.class
-/.idea
-/.lift
+*.idea
+*.lift
