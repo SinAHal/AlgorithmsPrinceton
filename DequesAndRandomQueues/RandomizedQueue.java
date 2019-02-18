@@ -7,14 +7,45 @@
  *
  **************************************************************************** */
 
-// TODO: might be best to use resizing array
-// enqueue -> if queue full && arr[0] == null, shift items to left by copying over to same size array
-// else if full && arr[0] != null, double size of arr and copy over
+import java.util.Iterator;
 
-// dequeue -> shrinking algorithm is trickier, both sides need trimming
-// need to keep track of head and tail index
-// (tail - head) == s.length / 4 => halve array and copy over items
-public class RandomizedQueue {
+public class RandomizedQueue<Item> implements Iterable<Item> {
+    // construct an empty randomized queue
+    public RandomizedQueue() {
+
+    }
+
+    // is the randomized queue empty?
+    public boolean isEmpty() {
+
+    }
+
+    // return the number of items on the randomized queue
+    public int size() {
+
+    }
+
+    // add the item
+    public void enqueue(Item item) {
+
+    }
+
+    // remove and return a random item
+    public Item dequeue() {
+
+    }
+
+    // return a random item (but do not remove it)
+    public Item sample() {
+
+    }
+
+    // return an independent iterator over items in random order
+    public Iterator<Item> iterator() {
+
+    }
+
+    // unit testing (optional)
     public static void main(String[] args) {
 
     }
