@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class Deque<Item> implements Iterable<Item> {
+    private int size = 0;
     private Node first, last;
 
     private class Node {
@@ -26,18 +27,15 @@ public class Deque<Item> implements Iterable<Item> {
     public Deque() { }
 
     // is the deque empty?
-    public boolean isEmpty() { return first == null; }
+    public boolean isEmpty() { return size == 0; }
 
     // return the number of items on the deque
-    public int size() {
-        int s = 0;
-        for (Item i : this) s++;
-        return s;
-    }
+    public int size() { return size; }
 
     // add the item to the front
     public void addFirst(Item item) {
         if (item == null) throw new IllegalArgumentException();
+        size++;
 
         Node oldfirst = first;
         first = new Node();
@@ -51,6 +49,7 @@ public class Deque<Item> implements Iterable<Item> {
     // add the item to the end
     public void addLast(Item item) {
         if (item == null) throw new IllegalArgumentException();
+        size++;
 
         Node oldlast = last;
         last = new Node();
@@ -64,6 +63,7 @@ public class Deque<Item> implements Iterable<Item> {
     // remove and return the item from the front
     public Item removeFirst() {
         if (isEmpty()) throw new NoSuchElementException();
+        size--;
 
         Item item = first.item;
         first = first.next;
@@ -75,6 +75,7 @@ public class Deque<Item> implements Iterable<Item> {
     // remove and return the item from the end
     public Item removeLast() {
         if (isEmpty()) throw new NoSuchElementException();
+        size--;
 
         Item item = last.item;
         if (last.prev == null) {
