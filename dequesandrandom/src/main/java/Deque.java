@@ -8,8 +8,6 @@
  *
  **************************************************************************** */
 
-import edu.princeton.cs.algs4.StdOut;
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -105,20 +103,5 @@ public class Deque<Item> implements Iterable<Item> {
             current = current.next;
             return item;
         }
-    }
-
-    // unit testing (optional)
-    public static void main(String[] args) {
-        Deque<Integer> ds = new Deque<>();
-        for(int i=1; i<=10; i++) {
-            ds.addLast(i);
-        }
-        StdOut.println(ds.removeLast());
-        StdOut.println(ds.removeLast());
-        StdOut.println(ds.removeLast());
-        StdOut.println(ds.removeFirst());
-        StdOut.println(ds.removeFirst());
-
-        for(int x : ds) StdOut.print(x+" ");
     }
 }
