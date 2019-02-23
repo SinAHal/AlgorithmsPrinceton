@@ -38,6 +38,20 @@ public class TestRandomizedQueue extends TestCase {
         assertEquals(0, randomInts.size());
     }
 
+    public void testQueueAfterDequeue() {
+        ArrayList<Integer> added = new ArrayList<Integer>();
+        for (int i=0; i<8; i++) {
+            assertFalse(randomInts.isEmpty());
+            int dqd = randomInts.dequeue();
+            assertFalse(added.contains(dqd));
+            added.add(dqd);
+        }
+        for (int i=0; i<3; i++) {
+            randomInts.enqueue(11 + i);
+        }
+        assertEquals(5, randomInts.size());
+    }
+
     public void testSampling() {
         System.out.println("testing sampling");
         for (int i=0; i<QUEUE_SIZE; i++) {
@@ -74,6 +88,24 @@ public class TestRandomizedQueue extends TestCase {
         assertFalse(randomInts.isEmpty());
         assertEquals(QUEUE_SIZE, randomInts.size());
         assertFalse(equal);
+    }
+
+    public void testNestedIterator() {
+        int i=0;
+        int j=0;
+        for(Integer i1 : randomInts) {
+            assertNotNull(i1);
+            if (i == 5) {
+                for(Integer i2 : randomInts) {
+                    assertNotNull(i2);
+                    j++;
+                }
+            }
+            i++;
+        }
+
+        assertEquals(10,i);
+        assertEquals(10,j);
     }
 
 }
