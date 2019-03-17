@@ -8,8 +8,9 @@
  *
  ******************************************************************************/
 
-import java.util.Comparator;
 import edu.princeton.cs.algs4.StdDraw;
+
+import java.util.Comparator;
 
 public class Point implements Comparable<Point> {
 
@@ -53,13 +54,21 @@ public class Point implements Comparable<Point> {
      * is (y1 - y0) / (x1 - x0). For completeness, the slope is defined to be
      * +0.0 if the line segment connecting the two points is horizontal;
      * Double.POSITIVE_INFINITY if the line segment is vertical;
-     * and Double.NEGATIVE_INFINITY if (x0, y0) and (x1, y1) are equal.
+     * and Double.NEGATIVE_INFINITY if (x0, y0) and (x1, y1) are equal (degenerate).
      *
      * @param  that the other point
      * @return the slope between this point and the specified point
      */
     public double slopeTo(Point that) {
-        /* YOUR CODE HERE */
+        if (this.x == that.x && this.y == that.y)
+            return Double.NEGATIVE_INFINITY;
+        else if (this.x == that.x)
+            return Double.POSITIVE_INFINITY;
+        else if (this.y == that.y)
+            return 0.0;
+        else {
+            return ((double) that.y - this.y) / (that.x - this.x);
+        }
     }
 
     /**
@@ -75,7 +84,16 @@ public class Point implements Comparable<Point> {
      *         argument point
      */
     public int compareTo(Point that) {
-        /* YOUR CODE HERE */
+        if (this.y > that.y)
+            return 1;
+        else if (this.y < that.y)
+            return -1;
+        else if (this.x > that.x)
+            return 1;
+        else if (this.x < that.x)
+            return -1;
+        else
+            return 0;
     }
 
     /**
@@ -85,7 +103,7 @@ public class Point implements Comparable<Point> {
      * @return the Comparator that defines this ordering on points
      */
     public Comparator<Point> slopeOrder() {
-        /* YOUR CODE HERE */
+        return new PointComparator();
     }
 
 
@@ -106,5 +124,15 @@ public class Point implements Comparable<Point> {
      */
     public static void main(String[] args) {
         /* YOUR CODE HERE */
+    }
+
+    private class PointComparator implements Comparator<Point> {
+        @Override
+        public int compare(Point o1, Point o2) {
+            double s1 = slopeTo(o1);
+            double s2 = slopeTo(o2);
+
+            return Double.compare(s1, s2);
+        }
     }
 }
