@@ -2,6 +2,7 @@ import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdOut;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 
 public class BruteCollinearPoints {
@@ -51,7 +52,7 @@ public class BruteCollinearPoints {
 
     private void findSegments(Point[] combo, int cdx, int ndx, Point[] elems) {
         if (ndx == elems.length && cdx == combo.length && isCollinear(combo)) {
-            // TODO: points might be out-of-order in segment, FIX ORDERING
+            Arrays.sort(combo);
             LineSegment seg = new LineSegment(combo[0], combo[cdx-1]);
             segments.add(seg);
         }
