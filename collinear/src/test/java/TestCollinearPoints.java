@@ -45,8 +45,8 @@ public class TestCollinearPoints extends TestCase {
         // print and draw the line segments
         BruteCollinearPoints collinear = new BruteCollinearPoints(points);
         LineSegment[] segs = collinear.segments();
-        assertEquals("(10000, 0) -> (7000, 3000)",segs[0].toString());
-        assertEquals("(20000, 21000) -> (6000, 7000)",segs[1].toString());
+        assertEquals("(10000, 0) -> (0, 10000)",segs[0].toString());
+        assertEquals("(3000, 4000) -> (20000, 21000)",segs[1].toString());
         for (LineSegment segment : segs) {
             System.out.println(segment);
             segment.draw();
@@ -54,7 +54,7 @@ public class TestCollinearPoints extends TestCase {
         StdDraw.show();
     }
 
-    public void testFast() {
+    public void testFastInput8() {
         Point[] points = readPoints("input8.txt");
 
         // draw the points
@@ -67,10 +67,35 @@ public class TestCollinearPoints extends TestCase {
         StdDraw.show();
 
         // print and draw the line segments
-        BruteCollinearPoints collinear = new BruteCollinearPoints(points);
+        FastCollinearPoints collinear = new FastCollinearPoints(points);
         LineSegment[] segs = collinear.segments();
-        assertEquals("(10000, 0) -> (7000, 3000)",segs[0].toString());
-        assertEquals("(20000, 21000) -> (6000, 7000)",segs[1].toString());
+        // assertEquals(2, segs.length);
+        assertEquals("(3000, 4000) -> (20000, 21000)",segs[0].toString());
+        assertEquals("(0, 10000) -> (10000, 0)",segs[1].toString());
+        for (LineSegment segment : segs) {
+            System.out.println(segment);
+            segment.draw();
+        }
+        StdDraw.show();
+    }
+
+    public void testFastInput6() {
+        Point[] points = readPoints("input6.txt");
+
+        // draw the points
+        StdDraw.enableDoubleBuffering();
+        StdDraw.setXscale(0, 32768);
+        StdDraw.setYscale(0, 32768);
+        for (Point p : points) {
+            p.draw();
+        }
+        StdDraw.show();
+
+        // print and draw the line segments
+        FastCollinearPoints collinear = new FastCollinearPoints(points);
+        LineSegment[] segs = collinear.segments();
+        assertEquals(1, segs.length);
+        assertEquals("(14000, 10000) -> (32000, 10000)",segs[0].toString());
         for (LineSegment segment : segs) {
             System.out.println(segment);
             segment.draw();
