@@ -2,7 +2,65 @@ import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdOut;
 
+import java.util.Arrays;
 import java.util.LinkedList;
+
+/**
+ *  Test 1: points from a file
+ *  * filename = input8.txt
+ *  * filename = equidistant.txt
+ *  * filename = input40.txt
+ *  - number of entries in student solution: 5
+ *  - number of entries in reference solution: 4
+ *  - 1 extra entry in student solution: '(5000, 12000) -> (1000, 28000)'
+ *
+ *  * filename = input48.txt
+ *  - segments() contains the same segment more than once
+ *  - segment 1: (1000, 2000) -> (1000, 26000)
+ *  - segment 2: (1000, 2000) -> (1000, 26000)
+ *  - number of entries in student solution: 11
+ *  - number of entries in reference solution: 6
+ *  - 5 extra entries in student solution, including: '(19000, 24000) -> (1000, 26000)'
+ *  ==> FAILED
+ *
+ *  Test 6: check for dependence on either compareTo() or compare() returning { -1, +1, 0 }
+ *  instead of { negative integer, positive integer, zero }
+ *  * filename = equidistant.txt
+ *  * filename = input40.txt
+ *  - number of entries in student solution: 5
+ *  - number of entries in reference solution: 4
+ *  - 1 extra entry in student solution: '(5000, 12000) -> (1000, 28000)'
+ *
+ *  * filename = input48.txt
+ *  - segments() contains the same segment more than once
+ *  - segment 1: (1000, 2000) -> (1000, 26000)
+ *  - segment 2: (1000, 2000) -> (1000, 26000)
+ *  - number of entries in student solution: 11
+ *  - number of entries in reference solution: 6
+ *  - 5 extra entries in student solution, including: '(19000, 24000) -> (1000, 26000)'
+ *  ==> FAILED
+ *
+ *  Test 7: check for fragile dependence on return value of toString()
+ *  * filename = equidistant.txt
+ *  * filename = input40.txt
+ *  - number of entries in student solution: 5
+ *  - number of entries in reference solution: 4
+ *  - 1 extra entry in student solution: '(5000, 12000) -> (1000, 28000)'
+ *
+ *  * filename = input48.txt
+ *  - segments() contains the same segment more than once
+ *  - segment 1: (1000, 2000) -> (1000, 26000)
+ *  - segment 2: (1000, 2000) -> (1000, 26000)
+ *  - number of entries in student solution: 11
+ *  - number of entries in reference solution: 6
+ *  - 5 extra entries in student solution, including: '(19000, 24000) -> (1000, 26000)'
+ *  
+ *  It is bad style to write code that depends on the particular format of the output from the toString() method,
+ *  especially if your reason for doing so is to circumvent the public API
+ *  (which intentionally does not provide access to the x- and y-coordinates).
+ *
+ *  16/20 timing tests passed
+ */
 
 public class BruteCollinearPoints {
 
@@ -51,7 +109,7 @@ public class BruteCollinearPoints {
 
     private void findSegments(Point[] combo, int cdx, int ndx, Point[] elems) {
         if (ndx == elems.length && cdx == combo.length && isCollinear(combo)) {
-            // TODO: points might be out-of-order in segment, FIX ORDERING
+            Arrays.sort(combo);
             LineSegment seg = new LineSegment(combo[0], combo[cdx-1]);
             segments.add(seg);
         }
