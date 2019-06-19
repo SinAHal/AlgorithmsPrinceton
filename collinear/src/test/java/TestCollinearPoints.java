@@ -69,7 +69,7 @@ public class TestCollinearPoints extends TestCase {
         // print and draw the line segments
         FastCollinearPoints collinear = new FastCollinearPoints(points);
         LineSegment[] segs = collinear.segments();
-        // assertEquals(2, segs.length);
+        assertEquals(2, segs.length);
         assertEquals("(3000, 4000) -> (20000, 21000)",segs[0].toString());
         assertEquals("(0, 10000) -> (10000, 0)",segs[1].toString());
         for (LineSegment segment : segs) {

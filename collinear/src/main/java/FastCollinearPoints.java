@@ -11,11 +11,12 @@ import java.util.LinkedList;
 public class FastCollinearPoints {
 
     private LinkedList<LineSegment> segments;
+    private LinkedList<TempSegment> tempSegs;
 
-    // finds all line segments containing 4 or more points
     public FastCollinearPoints(Point[] points) {
         validatePoints(points);
         segments = new LinkedList<LineSegment>();
+        tempSegs = new LinkedList<TempSegment>();
         findSegments(points);
     }
 
@@ -35,28 +36,38 @@ public class FastCollinearPoints {
         }
     }
 
-    private LineSegment gatherSegment(Point[] points) {
-        Point[] pointsAccumulator = new Point[points.length];
-        pointsAccumulator[0] = points[0];
-        pointsAccumulator[1] = points[1];
-        int accumulatorSize = 2;
+    private void gatherSegment(Point[] points) {
+        LinkedList<Point> pointsAccumulator = new LinkedList<Point>();
+        pointsAccumulator.add(points[0]);
 
-        double headSlope = points[0].slopeTo(points[1]);
-        for (int i = 2; i < points.length; i++) {
-            double nextSlope = points[0].slopeTo(points[i]);
-            if (headSlope == nextSlope) {
-               pointsAccumulator[i] = points[i];
-               accumulatorSize++;
+        for (int i = 1; i < points.length; i++) {
+            pointsAccumulator.add(points[i]);
+            double thisSlope = points[0].slopeTo(points[i]);
+            double nextSlope = i < points.length-1 ? points[0].slopeTo(points[i+1]) : thisSlope;
+
+            if(nextSlope != thisSlope) {
+                if (pointsAccumulator.size() >= 3) {
+                    LineSegment ls = new LineSegment(pointsAccumulator.getFirst(), pointsAccumulator.getLast());
+                    TempSegment tempSegment = new TempSegment(ls, pointsAccumulator.size(), thisSlope);
+                    addSegment(tempSegment);
+                }
+
+                pointsAccumulator = new LinkedList<Point>();
+                pointsAccumulator.add(points[0]);
             }
             else {
-                break;
+                pointsAccumulator.add(points[i]);
             }
         }
+    }
 
-        if (accumulatorSize > 3)
-            return new LineSegment(pointsAccumulator[0], pointsAccumulator[accumulatorSize-1]);
-        else
-            return null;
+    private void addSegment(TempSegment tempSegment) {
+        for (TempSegment ts : tempSegs) {
+            if(ts.slope == tempSegment.slope && ts.size <= tempSegment.size) {
+                tempSegs.remove(ts);
+            }
+        }
+        tempSegs.add(tempSegment);
     }
 
     private void findSegments(Point[] points) {
@@ -66,10 +77,21 @@ public class FastCollinearPoints {
         for (Point point : points) {
             Comparator<Point> newOrder = point.slopeOrder();
             Arrays.sort(pointsCopy,newOrder);
-            LineSegment segment = gatherSegment(pointsCopy);
-            if(segment != null)
-                segments.add(segment);
+            pointsAndSlopes(pointsCopy);
+            gatherSegment(pointsCopy);
         }
+
+        for(TempSegment t : tempSegs)
+            segments.add(t.segment);
+    }
+
+    private void pointsAndSlopes(Point[] points) {
+        Point head = points[0];
+        System.out.println("Head: "+head);
+        for(int i=1; i<points.length; i++) {
+            System.out.println(points[i]+" "+head.slopeTo(points[i]));
+        }
+        System.out.println();
     }
 
     // the number of line segments
@@ -80,5 +102,17 @@ public class FastCollinearPoints {
     // the line segments
     public LineSegment[] segments() {
         return segments.toArray(new LineSegment[0]);
+    }
+
+    private class TempSegment {
+        private LineSegment segment;
+        public int size;
+        public double slope;
+
+        public TempSegment(LineSegment segment, int size, double slope) {
+            this.segment = segment;
+            this.size = size;
+            this.slope = slope;
+        }
     }
 }
