@@ -77,21 +77,11 @@ public class FastCollinearPoints {
         for (Point point : points) {
             Comparator<Point> newOrder = point.slopeOrder();
             Arrays.sort(pointsCopy,newOrder);
-            pointsAndSlopes(pointsCopy);
             gatherSegment(pointsCopy);
         }
 
         for(TempSegment t : tempSegs)
             segments.add(t.segment);
-    }
-
-    private void pointsAndSlopes(Point[] points) {
-        Point head = points[0];
-        System.out.println("Head: "+head);
-        for(int i=1; i<points.length; i++) {
-            System.out.println(points[i]+" "+head.slopeTo(points[i]));
-        }
-        System.out.println();
     }
 
     // the number of line segments
